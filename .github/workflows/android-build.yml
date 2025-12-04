@@ -40,17 +40,17 @@ jobs:
       - name: Clean Gradle
         run: cd android && ./gradlew clean
 
-      - name: Build Android Debug APK
+      - name: Build Android Release APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon --stacktrace
         env:
           JAVA_OPTS: -Xmx4096m
           GRADLE_OPTS: -Xmx4096m -XX:MaxMetaspaceSize=1024m -Dorg.gradle.jvmargs="-Xmx4096m -XX:MaxMetaspaceSize=1024m"
 
-      - name: Upload Debug APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: app-release
+          path: android/app/build/outputs/apk/release/*.apk
