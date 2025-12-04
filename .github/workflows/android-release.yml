@@ -2,7 +2,7 @@ name: Android Release Build
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
@@ -22,10 +22,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
+        
+      - name: Add toReversed polyfill
+        run: |
+          node -e "Array.prototype.toReversed = Array.prototype.toReversed || function() { return this.slice().reverse(); }; console.log('Polyfill added')"
 
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
@@ -34,7 +38,9 @@ jobs:
         run: mkdir -p android/app/src/main/assets
 
       - name: Bundle JavaScript
-        run: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+        run: |
+          node -e "Array.prototype.toReversed = Array.prototype.toReversed || function() { return this.slice().reverse(); };"
+          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
