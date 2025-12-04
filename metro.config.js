@@ -1,5 +1,12 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
+// Polyfill for toReversed if not available
+if (!Array.prototype.toReversed) {
+  Array.prototype.toReversed = function() {
+    return this.slice().reverse();
+  };
+}
+
 /**
  * Metro configuration
  * https://reactnative.dev/docs/metro
