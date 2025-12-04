@@ -43,10 +43,14 @@ jobs:
       - name: Build Android Release APK
         run: |
           cd android
-          ./gradlew assembleRelease --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon --stacktrace -x bundleReleaseJsAndAssets
         env:
           JAVA_OPTS: -Xmx4096m
           GRADLE_OPTS: -Xmx4096m -XX:MaxMetaspaceSize=1024m -Dorg.gradle.jvmargs="-Xmx4096m -XX:MaxMetaspaceSize=1024m"
+          
+      - name: Bundle JS manually
+        run: |
+          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
