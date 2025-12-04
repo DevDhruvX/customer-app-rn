@@ -53,46 +53,32 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#000',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
-    videoPlaceholder: {
+    errorContainer: {
         flex: 1,
+        backgroundColor: '#000',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
+        padding: 30,
     },
-    placeholderText: {
-        fontSize: 24,
-        color: '#fff',
+    errorTitle: {
+        fontSize: 28,
+        color: '#ff6b6b',
         marginBottom: 20,
         fontWeight: 'bold',
-    },
-    infoText: {
-        fontSize: 18,
-        color: '#fff',
-        marginBottom: 10,
-    },
-    noteText: {
-        fontSize: 14,
-        color: '#aaa',
-        marginTop: 30,
         textAlign: 'center',
     },
-    endButton: {
-        position: 'absolute',
-        bottom: 40,
-        width: '80%',
-        height: 50,
-        backgroundColor: '#f44336',
-        borderRadius: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: 'white',
+    errorText: {
         fontSize: 18,
-        fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 30,
+        textAlign: 'center',
+    },
+    errorStep: {
+        fontSize: 16,
+        color: '#aaa',
+        marginBottom: 15,
+        paddingLeft: 10,
     },
 });
 
