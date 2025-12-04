@@ -1,26 +1,50 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { ZegoUIKitPrebuiltCall, ONE_ON_ONE_VIDEO_CALL_CONFIG } from '@zegocloud/zego-uikit-prebuilt-call-rn';
+import { zegoConfig } from '../config/zegoConfig';
 
 const VideoCallScreen = ({ route, navigation }: any) => {
     const { userName, callId } = route.params || {};
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.videoPlaceholder}>
-                <Text style={styles.placeholderText}>Video Call Screen</Text>
-                <Text style={styles.infoText}>User: {userName}</Text>
-                <Text style={styles.infoText}>Call ID: {callId}</Text>
-                <Text style={styles.noteText}>
-                    Note: Zego SDK video calling will be integrated here
+    // Check if Zego credentials are configured
+    if (zegoConfig.appID === 123456789 || zegoConfig.appSign === 'YOUR_APP_SIGN_HERE') {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorTitle}>⚠️ Zego Not Configured</Text>
+                <Text style={styles.errorText}>
+                    Please configure Zego credentials:
+                </Text>
+                <Text style={styles.errorStep}>
+                    1. Go to https://console.zegocloud.com/
+                </Text>
+                <Text style={styles.errorStep}>
+                    2. Create a project and get AppID & AppSign
+                </Text>
+                <Text style={styles.errorStep}>
+                    3. Update src/config/zegoConfig.ts
+                </Text>
+                <Text style={styles.errorStep}>
+                    4. Rebuild the app
                 </Text>
             </View>
+        );
+    }
 
-            <TouchableOpacity
-                style={styles.endButton}
-                onPress={() => navigation.navigate('Bookings')}
-            >
-                <Text style={styles.buttonText}>End Call</Text>
-            </TouchableOpacity>
+    return (
+        <View style={styles.container}>
+            <ZegoUIKitPrebuiltCall
+                appID={zegoConfig.appID}
+                appSign={zegoConfig.appSign}
+                userID={userName || 'user_' + Date.now()}
+                userName={userName || 'Guest'}
+                callID={callId || 'default_call'}
+                config={{
+                    ...ONE_ON_ONE_VIDEO_CALL_CONFIG,
+                    onCallEnd: (callID: string, reason: any, duration: number) => {
+                        navigation.navigate('Bookings');
+                    },
+                }}
+            />
         </View>
     );
 };
